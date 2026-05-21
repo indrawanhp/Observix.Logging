@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <!-- Package -->
+        <PackageId>Observix.Logging</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Indrawan Heri Prabowo</Authors>
+        <Company>Cherry Squad</Company>
+        <Product>Observix.Logging</Product>
+
+        <Description>
+            Lightweight enterprise-grade observability library for .NET applications with structured logging, request tracing, correlation ID, middleware logging, exception handling, masking sensitive data, country-based log routing, and Serilog integration.
+        </Description>
+
+        <PackageTags>
+            observability;
+            logging;
+            serilog;
+            tracing;
+            middleware;
+            structured-logging;
+            correlation-id;
+            enterprise;
+            monitoring;
+            diagnostics;
+            dotnet
+        </PackageTags>
+
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+        <DebugType>portable</DebugType>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.10"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.8"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.8"/>
+        <PackageReference Include="Serilog" Version="4.3.1"/>
+        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0"/>
+        <PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1"/>
+        <PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0"/>
+        <PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0"/>
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0"/>
+        <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0"/>
+    </ItemGroup>
+
+</Project>
