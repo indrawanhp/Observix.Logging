@@ -57,6 +57,9 @@ public class ExceptionHandlingMiddleware
 
             var log =
                 logging.Initial(
+                    country:
+                    logContext.Country,
+                    
                     serviceLayer:
                     ServiceLayer.Api,
 

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Observix.Logging.Context;
+using Observix.Logging.Helpers;
 
 namespace Observix.Logging.Middleware;
 
 public class CorrelationIdMiddleware
 {
-    private const string HeaderName =
-        "x-correlation-id";
+    private const string HeaderName = "x-correlation-id";
 
     private readonly RequestDelegate _next;
 
@@ -19,22 +19,33 @@ public class CorrelationIdMiddleware
         HttpContext context,
         ILogContextAccessor accessor)
     {
+        var request = context.Request;
+        
         var correlationId =
-            context.Request.Headers[HeaderName]
+            context.Request.Headers[
+                    HeaderName]
                 .FirstOrDefault();
 
-        if (string.IsNullOrWhiteSpace(
-                correlationId))
+        if (string.IsNullOrWhiteSpace(correlationId))
         {
             correlationId =
-                Guid.NewGuid().ToString();
+                Guid.NewGuid()
+                    .ToString();
         }
 
-        accessor.SetCorrelationId(
-            correlationId);
+        var country = CountryHeaderResolver.Resolve(request);
 
-        context.Response.Headers[HeaderName] =
-            correlationId;
+        accessor.Set(
+            new LogContextModel
+            {
+                CorrelationId = correlationId,
+
+                Country = country,
+
+                TraceId = Guid.NewGuid().ToString()
+            });
+
+        context.Response.Headers[HeaderName] = correlationId;
 
         await _next(context);
     }

@@ -7,52 +7,55 @@ public class DefaultLogContextAccessor : ILogContextAccessor
 {
     private readonly AppInfoOptions _appInfo;
 
-    public DefaultLogContextAccessor(AppInfoOptions appInfo)
+    public DefaultLogContextAccessor(
+        AppInfoOptions appInfo)
     {
         _appInfo = appInfo;
     }
 
-    private static readonly AsyncLocal<string?>
-        CorrelationIdHolder = new();
-
-    private static readonly AsyncLocal<string?>
-        TraceIdHolder = new();
+    private static readonly AsyncLocal<LogContextModel?>
+        ContextHolder = new();
 
     public virtual LogContextModel Get()
     {
-        TraceIdHolder.Value ??=
-            Guid.NewGuid().ToString();
+        ContextHolder.Value ??=
+            new LogContextModel();
 
-        return new LogContextModel
-        {
-            TraceId = TraceIdHolder.Value,
+        ContextHolder.Value.TraceId ??=
+            Guid.NewGuid()
+                .ToString();
 
-            HostName = Environment.MachineName,
-            
-            InstanceId =
-                Environment.GetEnvironmentVariable("HOSTNAME")
-                ?? Environment.MachineName,
-            
-            HostIpAddress = HostIpResolver.Resolve(),
+        ContextHolder.Value.HostName ??= Environment.MachineName;
 
-            EnvironmentName =
-                Environment.GetEnvironmentVariable(
-                    "ASPNETCORE_ENVIRONMENT"),
+        ContextHolder.Value.InstanceId ??=
+            Environment.GetEnvironmentVariable(
+                "HOSTNAME")
+            ?? Environment.MachineName;
 
-            Username = Environment.UserName,
+        ContextHolder.Value.HostIpAddress ??= HostIpResolver.Resolve();
 
-            ApplicationName =
-                _appInfo.FullName,
+        ContextHolder.Value.EnvironmentName ??=
+            Environment.GetEnvironmentVariable(
+                "ASPNETCORE_ENVIRONMENT");
 
-            CorrelationId =
-                CorrelationIdHolder.Value
-        };
+        ContextHolder.Value.Username ??= Environment.UserName;
+
+        ContextHolder.Value.ApplicationName ??= _appInfo.FullName;
+
+        return ContextHolder.Value;
     }
 
-    public void SetCorrelationId(
-        string correlationId)
+    public void SetCorrelationId(string correlationId)
     {
-        CorrelationIdHolder.Value =
-            correlationId;
+        var context = Get();
+
+        context.CorrelationId = correlationId;
+
+        ContextHolder.Value = context;
+    }
+
+    public void Set(LogContextModel context)
+    {
+        ContextHolder.Value = context;
     }
 }

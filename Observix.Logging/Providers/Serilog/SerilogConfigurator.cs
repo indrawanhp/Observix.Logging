@@ -4,7 +4,6 @@ using Observix.Logging.Providers.Serilog.Enrichers;
 using Observix.Logging.Providers.Serilog.Helpers;
 using Serilog;
 using Serilog.Events;
-using Serilog.Filters;
 
 namespace Observix.Logging.Providers.Serilog;
 
@@ -44,95 +43,196 @@ public static class SerilogConfigurator
         }
 
         if (options.EnableFile)
-        {
-            // APP LOG
-            loggerConfiguration.WriteTo.Logger(lc =>
-            {
-                lc.MinimumLevel.Verbose();
-                
-                lc.Filter.ByIncludingOnly(x =>
-                        x.Properties.ContainsKey("LogFolder")
-                        &&
-                        x.Properties["LogFolder"]
-                            .ToString()
-                            .Trim('"') == LogFolder.Log)
-                    .WriteTo.File(
+{
+    // APP LOG
+    loggerConfiguration.WriteTo.Logger(lc =>
+    {
+        lc.MinimumLevel.Verbose();
+
+        lc.Filter.ByIncludingOnly(x =>
+                x.Properties.ContainsKey("LogFolder")
+                &&
+                x.Properties["LogFolder"]
+                    .ToString()
+                    .Trim('"') == LogFolder.Log)
+
+            .WriteTo.Map(
+                keyPropertyName:
+                "LogKey",
+
+                defaultKey:
+                "Log_ALL",
+
+                configure:
+                (
+                    logKey,
+                    wt
+                ) =>
+                {
+                    wt.File(
                         path:
                         LogPathBuilder.Build(
                             options,
                             appInfo,
-                            logFolder: LogFolder.Log),
-                        restrictedToMinimumLevel: LogEventLevel.Information,
-                        rollingInterval: ParseRollingInterval(options.File.RollingInterval),
-                        retainedFileCountLimit: options.File.RetainedFileCountLimit,
-                        shared: options.File.Shared,
-                        flushToDiskInterval: TimeSpan.FromSeconds(1),
+                            country:
+                            logKey.Replace(
+                                "Log_",
+                                ""),
+
+                            logFolder:
+                            LogFolder.Log),
+
+                        restrictedToMinimumLevel:
+                        LogEventLevel.Information,
+
+                        rollingInterval:
+                        ParseRollingInterval(
+                            options.File.RollingInterval),
+
+                        retainedFileCountLimit:
+                        options.File
+                            .RetainedFileCountLimit,
+
+                        shared:
+                        options.File.Shared,
+
+                        flushToDiskInterval:
+                        TimeSpan.FromSeconds(1),
+
                         outputTemplate:
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
                         "[{Level:u3}] " +
                         "{Message:lj}" +
                         "{NewLine}{Exception}");
-            });
-                
+                });
+    });
 
-            // ERROR LOG
-            loggerConfiguration.WriteTo.Logger(lc =>
-            {
-                lc.MinimumLevel.Verbose();
+    // ERROR LOG
+    loggerConfiguration.WriteTo.Logger(lc =>
+    {
+        lc.MinimumLevel.Verbose();
 
-                lc.Filter.ByIncludingOnly(x =>
-                        x.Properties.ContainsKey("LogFolder")
-                        &&
-                        x.Properties["LogFolder"]
-                            .ToString()
-                            .Trim('"') == LogFolder.LogError)
-                    .WriteTo.File(
+        lc.Filter.ByIncludingOnly(x =>
+                x.Properties.ContainsKey("LogFolder")
+                &&
+                x.Properties["LogFolder"]
+                    .ToString()
+                    .Trim('"') == LogFolder.LogError)
+
+            .WriteTo.Map(
+                keyPropertyName:
+                "LogKey",
+
+                defaultKey:
+                "LogError_ALL",
+
+                configure:
+                (
+                    logKey,
+                    wt
+                ) =>
+                {
+                    wt.File(
                         path:
                         LogPathBuilder.Build(
                             options,
                             appInfo,
-                            logFolder: LogFolder.LogError),
-                        restrictedToMinimumLevel: LogEventLevel.Information,
-                        rollingInterval: ParseRollingInterval(options.File.RollingInterval),
-                        retainedFileCountLimit: options.File.RetainedFileCountLimit,
-                        shared: options.File.Shared,
-                        flushToDiskInterval: TimeSpan.FromSeconds(1),
+                            country:
+                            logKey.Replace(
+                                "LogError_",
+                                ""),
+
+                            logFolder:
+                            LogFolder.LogError),
+
+                        restrictedToMinimumLevel:
+                        LogEventLevel.Information,
+
+                        rollingInterval:
+                        ParseRollingInterval(
+                            options.File.RollingInterval),
+
+                        retainedFileCountLimit:
+                        options.File
+                            .RetainedFileCountLimit,
+
+                        shared:
+                        options.File.Shared,
+
+                        flushToDiskInterval:
+                        TimeSpan.FromSeconds(1),
+
                         outputTemplate:
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
                         "[{Level:u3}] " +
                         "{Message:lj}" +
                         "{NewLine}{Exception}");
-            });
+                });
+    });
 
-            // MIDDLEWARE LOG
-            loggerConfiguration.WriteTo.Logger(lc =>
-            {
-                lc.MinimumLevel.Verbose();
+    // MIDDLEWARE LOG
+    loggerConfiguration.WriteTo.Logger(lc =>
+    {
+        lc.MinimumLevel.Verbose();
 
-                lc.Filter.ByIncludingOnly(x =>
-                        x.Properties.ContainsKey("LogFolder")
-                        &&
-                        x.Properties["LogFolder"]
-                            .ToString()
-                            .Trim('"') == LogFolder.LogMiddleware)
-                    .WriteTo.File(
+        lc.Filter.ByIncludingOnly(x =>
+                x.Properties.ContainsKey("LogFolder")
+                &&
+                x.Properties["LogFolder"]
+                    .ToString()
+                    .Trim('"') == LogFolder.LogMiddleware)
+
+            .WriteTo.Map(
+                keyPropertyName:
+                "LogKey",
+
+                defaultKey:
+                "LogMiddleware_ALL",
+
+                configure:
+                (
+                    logKey,
+                    wt
+                ) =>
+                {
+                    wt.File(
                         path:
                         LogPathBuilder.Build(
                             options,
                             appInfo,
-                            logFolder: LogFolder.LogMiddleware),
-                        restrictedToMinimumLevel: LogEventLevel.Information,
-                        rollingInterval: ParseRollingInterval(options.File.RollingInterval),
-                        retainedFileCountLimit: options.File.RetainedFileCountLimit,
-                        shared: options.File.Shared,
-                        flushToDiskInterval: TimeSpan.FromSeconds(1),
+                            country:
+                            logKey.Replace(
+                                "LogMiddleware_",
+                                ""),
+
+                            logFolder:
+                            LogFolder.LogMiddleware),
+
+                        restrictedToMinimumLevel:
+                        LogEventLevel.Information,
+
+                        rollingInterval:
+                        ParseRollingInterval(
+                            options.File.RollingInterval),
+
+                        retainedFileCountLimit:
+                        options.File
+                            .RetainedFileCountLimit,
+
+                        shared:
+                        options.File.Shared,
+
+                        flushToDiskInterval:
+                        TimeSpan.FromSeconds(1),
+
                         outputTemplate:
                         "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
                         "[{Level:u3}] " +
                         "{Message:lj}" +
                         "{NewLine}{Exception}");
-            });
-        }
+                });
+    });
+}
 
         Log.Logger = loggerConfiguration.CreateLogger();
     }

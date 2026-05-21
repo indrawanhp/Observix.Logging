@@ -10,6 +10,8 @@ public sealed class LogContextScope : IDisposable
     private readonly IDisposable _applicationName;
 
     private readonly IDisposable _logFolder;
+    
+    private readonly IDisposable _logKey;
 
     public LogContextScope(LogEntry logEntry)
     {
@@ -27,10 +29,17 @@ public sealed class LogContextScope : IDisposable
             LogContext.PushProperty(
                 "LogFolder",
                 logEntry.LogFolder);
+        
+        _logKey =
+            LogContext.PushProperty(
+                "LogKey",
+                $"{logEntry.LogFolder}_{logEntry.Country}");
     }
 
     public void Dispose()
     {
+        _logKey.Dispose();
+        
         _logFolder.Dispose();
 
         _applicationName.Dispose();
