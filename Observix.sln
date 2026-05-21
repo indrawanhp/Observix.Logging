@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Console Minimal", "Test Console Minimal\Test Console Minimal.csproj", "{3F8ABA0A-D132-42B3-8463-461AE8C7886B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test API Minimal", "Test API Minimal\Test API Minimal.csproj", "{62569E36-44F1-4389-B21C-AA8FA4E669DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observix.Logging", "Observix.Logging\Observix.Logging.csproj", "{58EB368C-4416-4596-8ACD-0CB879AC9A98}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3F8ABA0A-D132-42B3-8463-461AE8C7886B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F8ABA0A-D132-42B3-8463-461AE8C7886B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F8ABA0A-D132-42B3-8463-461AE8C7886B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F8ABA0A-D132-42B3-8463-461AE8C7886B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62569E36-44F1-4389-B21C-AA8FA4E669DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62569E36-44F1-4389-B21C-AA8FA4E669DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62569E36-44F1-4389-B21C-AA8FA4E669DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62569E36-44F1-4389-B21C-AA8FA4E669DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58EB368C-4416-4596-8ACD-0CB879AC9A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58EB368C-4416-4596-8ACD-0CB879AC9A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58EB368C-4416-4596-8ACD-0CB879AC9A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58EB368C-4416-4596-8ACD-0CB879AC9A98}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
